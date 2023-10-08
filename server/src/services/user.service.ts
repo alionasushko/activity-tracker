@@ -34,7 +34,6 @@ export const findUser = async (
 
 // Sign Token
 export const signToken = async (user: DocumentType<User>) => {
-  console.log("user", user);
   // Sign the access token
   const access_token = signJwt(
     { sub: user._id },
@@ -42,8 +41,6 @@ export const signToken = async (user: DocumentType<User>) => {
       expiresIn: `${config.get<number>("accessTokenExpiresIn")}m`,
     }
   );
-
-  console.log("access_token", access_token);
 
   // Create a Session
   redisClient.set(user._id, JSON.stringify(user), {

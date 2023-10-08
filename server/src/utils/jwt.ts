@@ -15,19 +15,12 @@ export const signJwt = (payload: Object, options: SignOptions = {}) => {
 
 export const verifyJwt = <T>(token: string): T | null => {
   try {
-    const publicKey = Buffer.from(
+    const privateKey = Buffer.from(
       config.get<string>("accessTokenPrivateKey"),
       "base64"
     ).toString("ascii");
 
-    // const publicKey = config.get<string>("accessTokenPublicKey");
-
-    console.log({
-      token,
-      publicKey,
-      env: config.get<string>("accessTokenPublicKey"),
-    });
-    return jwt.verify(token, publicKey) as T;
+    return jwt.verify(token, privateKey) as T;
   } catch (error) {
     return null;
   }
