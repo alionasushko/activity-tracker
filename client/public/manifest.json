@@ -1,0 +1,7 @@
+{
+  "short_name": "Activity Tracker",
+  "name": "Activity Tracker",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone"
+}
