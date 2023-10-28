@@ -10,13 +10,13 @@ export interface IUser {
 }
 
 export interface UserRegisterData {
-  name: FormDataEntryValue | null
-  email: FormDataEntryValue | null
-  password: FormDataEntryValue | null
-  passwordConfirm: FormDataEntryValue | null
+  name: string
+  email: string
+  password: string
+  passwordConfirm: string
 }
 
 export interface UserLoginData {
-  email: FormDataEntryValue | null
-  password: FormDataEntryValue | null
+  email: string
+  password: string
 }

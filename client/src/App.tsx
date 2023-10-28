@@ -1,14 +1,17 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ErrorBoundary } from 'react-error-boundary'
-import MainLayout from './layouts/MainLayout'
+import { ToastContainer } from 'react-toastify'
+import MainLayout from './layouts/main/MainLayout'
 import GuestLayout from './layouts/GuestLayout'
-import SignUp from './routes/auth/SignUp'
-import SignIn from './routes/auth/SignIn'
+import SignUp from './routes/auth/signup/SignUp'
+import SignIn from './routes/auth/signin/SignIn'
 import NotFound from './components/NotFound'
 import Home from './routes/home/Home'
 import { getToken } from './utils/auth'
-import './App.css'
+import './App.sass'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 const App: React.FC = () => {
   const accessToken = getToken()
@@ -28,6 +31,7 @@ const App: React.FC = () => {
           </Route>
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </ErrorBoundary>
   )
 }

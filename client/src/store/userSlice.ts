@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AxiosResponse } from 'axios'
 import { RootState } from './store'
 import { IUser, UserRegisterData, UserLoginData } from '../types/user'
-import { registerUser, loginUser, getUserCredentials } from '../api/userAPI'
 import { setToken, removeToken, setAccount, getAccount, removeAccount } from '../utils/auth'
+import { request } from '../api/config'
 
 const initialState: IUser = {
   status: 'idle',
@@ -12,15 +12,13 @@ const initialState: IUser = {
 }
 
 export const registerUserAsync = createAsyncThunk('post/registerUser', async (formData: UserRegisterData) => {
-  const response = await registerUser(formData)
-  return response.data
+  return await request({ method: 'POST', url: '/auth/register', data: formData })
 })
 
 export const loginUserAsync = createAsyncThunk('post/loginUser', async (formData: UserLoginData) => {
-  const loginResponse = await loginUser(formData)
-  const accessToken = loginResponse.data.access_token
-  setToken(accessToken)
-  return loginResponse.data
+  const data = await request({ method: 'POST', url: '/auth/login', data: formData })
+  setToken(data.access_token)
+  return data
 })
 
 export const signOutAsync = createAsyncThunk('auth/signOut', async () => {
@@ -33,11 +31,9 @@ export const getUserCredentialsAsync = createAsyncThunk<AxiosResponse, void, { s
   async () => {
     const savedAccount = getAccount()
     if (savedAccount) return JSON.parse(savedAccount)
-
-    const response = await getUserCredentials()
-    const account = response.data.data.user
-    setAccount(account)
-    return response.data
+    const data = await request({ method: 'GET', url: '/users/me' })
+    setAccount(data.data.user)
+    return data
   },
 )
 
@@ -83,9 +79,15 @@ export const userSlice = createSlice({
       .addCase(getUserCredentialsAsync.rejected, (state) => {
         state.status = 'failed'
       })
+      .addCase(signOutAsync.pending, (state) => {
+        state.status = 'loading'
+      })
       .addCase(signOutAsync.fulfilled, (state) => {
         state.account = null
         state.accessToken = ''
+      })
+      .addCase(signOutAsync.rejected, (state) => {
+        state.status = 'failed'
       })
   },
 })

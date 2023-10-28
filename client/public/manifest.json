@@ -1,6 +1,6 @@
 {
-  "short_name": "Activity Tracker",
-  "name": "Activity Tracker",
+  "short_name": "Productivity Tracker",
+  "name": "Productivity Tracker",
   "icons": [],
   "start_url": ".",
   "display": "standalone"
