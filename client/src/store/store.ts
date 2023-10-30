@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import userSlice from './userSlice'
 import calendarSlice from './calendarSlice'
+import statisticsSlice from './statisticsSlice'
 
 export const store = configureStore({
   reducer: {
     user: userSlice,
     calendar: calendarSlice,
+    statistics: statisticsSlice,
   },
 })
 

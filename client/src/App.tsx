@@ -8,6 +8,7 @@ import SignUp from './routes/auth/signup/SignUp'
 import SignIn from './routes/auth/signin/SignIn'
 import NotFound from './components/NotFound'
 import Home from './routes/home/Home'
+import Statistics from './routes/statistics/Statistics'
 import { getToken } from './utils/auth'
 import './App.sass'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -28,6 +29,7 @@ const App: React.FC = () => {
           </Route>
           <Route element={<MainLayout />}>
             <Route index element={<Home />} />
+            <Route path="/statistics" element={<Statistics />} />
           </Route>
         </Routes>
       </BrowserRouter>

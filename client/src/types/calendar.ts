@@ -21,7 +21,6 @@ export interface ICalendar {
   events: IEvent[]
   event: IEvent | onShowEventViewParams
   isOpenEventModal: boolean
-  error: any
 }
 
 export interface ICalendarProps {

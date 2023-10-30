@@ -4,6 +4,7 @@ import {
   createEventHandler,
   updateEventHandler,
   deleteEventHandler,
+  getStatistics,
 } from "../controllers/event.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -17,6 +18,8 @@ router.use(deserializeUser, requireUser);
 router.get("/", getEventsHandler);
 
 router.post("/", validate(createEventSchema), createEventHandler);
+
+router.post("/statistics", getStatistics);
 
 router.put("/", validate(createEventSchema), updateEventHandler);
 

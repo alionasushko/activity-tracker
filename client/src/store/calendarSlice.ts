@@ -23,7 +23,6 @@ const initialState: ICalendar = {
   events: [],
   isOpenEventModal: false,
   event: initialEventState,
-  error: null,
 }
 
 export const getEventsAsync = createAsyncThunk('get/events', async () => {

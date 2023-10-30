@@ -4,6 +4,9 @@ import {
   createEvent,
   deleteEvent,
   findEvent,
+  findEventsByDateRange,
+  getEventsStatistics,
+  countEventsByDateRange,
 } from "../services/event.service";
 
 export const getEventsHandler = async (
@@ -89,6 +92,49 @@ export const deleteEventHandler = async (
         .json({ message: "Event is assigned to another user" });
     await deleteEvent(id);
     res.sendStatus(204);
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getStatistics = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { startDate, endDate } = req.body;
+
+    const events = await findEventsByDateRange(
+      res.locals.user._id,
+      startDate,
+      endDate
+    );
+
+    const chartData = getEventsStatistics(events);
+    const completed = await countEventsByDateRange(
+      res.locals.user._id,
+      startDate,
+      endDate,
+      "complete"
+    );
+    const incompleted = await countEventsByDateRange(
+      res.locals.user._id,
+      startDate,
+      endDate,
+      "incomplete"
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        summary: {
+          incompleted,
+          completed,
+        },
+        chartData,
+      },
+    });
   } catch (err: any) {
     next(err);
   }

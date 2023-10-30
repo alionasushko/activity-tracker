@@ -18,7 +18,7 @@ export class Event {
   @prop({ required: true })
   name: string;
 
-  @prop({ default: "upcoming" })
+  @prop({ default: "incomplete" })
   status: string;
 
   @prop()
@@ -28,10 +28,10 @@ export class Event {
   notes: string;
 
   @prop({ required: true })
-  start: string;
+  start: Date;
 
   @prop({ required: true })
-  end: string;
+  end: Date;
 
   @prop({ ref: User })
   userId: Ref<User>;
