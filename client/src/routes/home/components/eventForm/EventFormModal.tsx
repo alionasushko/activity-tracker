@@ -1,5 +1,4 @@
 import { Form, Formik, ErrorMessage } from 'formik'
-
 import {
   Box,
   Button,
@@ -12,6 +11,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -27,12 +27,14 @@ import {
   resetEvent,
   selectEvent,
   selectIsOpenEventModal,
+  selectCalendarStatus,
 } from '../../../../store/calendarSlice'
 import YupValidation from './yupValidation'
 
 const EventFormModal = () => {
   const dispatch = useAppDispatch()
   const event = useAppSelector(selectEvent)
+  const status = useAppSelector(selectCalendarStatus)
   const isOpenEventModal = useAppSelector(selectIsOpenEventModal)
 
   const createEvent = async (values: IEventFormData) => {
@@ -42,7 +44,6 @@ const EventFormModal = () => {
   }
 
   const updateEvent = async (values: IEventFormData) => {
-    values = { ...values, status: values.status?.[0] === 'on' ? 'complete' : 'incomplete' }
     await dispatch(updateEventAsync(values)).unwrap()
     handleCloseModal()
     dispatch(getEventsAsync())
@@ -97,11 +98,14 @@ const EventFormModal = () => {
                         <FormControlLabel
                           label="Completed"
                           name="status"
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            if ('checked' in e.target)
+                              setFieldValue('status', e.target.checked ? 'complete' : 'incomplete')
+                          }}
                           onBlur={handleBlur}
                           control={
                             <Checkbox
-                              checked={values.status?.[0] === 'on'}
+                              checked={values.status === 'complete'}
                               sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
                             />
                           }
@@ -173,9 +177,16 @@ const EventFormModal = () => {
                     helperText={<ErrorMessage name="notes" />}
                     error={errors.notes ? touched.notes : undefined}
                   />
-                  <Button variant="contained" type="submit" color="primary" sx={{ mt: 4 }} fullWidth>
+                  <LoadingButton
+                    variant="contained"
+                    loading={status === 'loading'}
+                    type="submit"
+                    color="primary"
+                    sx={{ mt: 4 }}
+                    fullWidth
+                  >
                     Submit
-                  </Button>
+                  </LoadingButton>
                 </Form>
               )
             }}

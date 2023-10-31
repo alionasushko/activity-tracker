@@ -22,8 +22,11 @@ export const loginUserAsync = createAsyncThunk('post/loginUser', async (formData
 })
 
 export const signOutAsync = createAsyncThunk('auth/signOut', async () => {
-  removeToken()
-  removeAccount()
+  const res = await request({ method: 'GET', url: '/auth/logout' })
+  if (res.status === 'success') {
+    removeToken()
+    removeAccount()
+  }
 })
 
 export const getUserCredentialsAsync = createAsyncThunk<AxiosResponse, void, { state: RootState }>(
@@ -41,11 +44,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
 
-  reducers: {
-    setAccountData: (state, action) => {
-      state.account = action.payload
-    },
-  },
+  reducers: {},
 
   extraReducers: (builder) => {
     builder
@@ -83,6 +82,7 @@ export const userSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(signOutAsync.fulfilled, (state) => {
+        state.status = 'idle'
         state.account = null
         state.accessToken = ''
       })
@@ -94,7 +94,5 @@ export const userSlice = createSlice({
 
 export const selectAccount = (state: RootState) => state.user.account
 export const selectUserStatus = (state: RootState) => state.user.status
-
-export const { setAccountData } = userSlice.actions
 
 export default userSlice.reducer

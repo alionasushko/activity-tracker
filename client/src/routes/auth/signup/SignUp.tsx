@@ -1,7 +1,7 @@
 import { Form, Formik, ErrorMessage } from 'formik'
-import { useAppDispatch } from '../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import Link from '@mui/material/Link'
@@ -10,7 +10,7 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { registerUserAsync } from '../../../store/userSlice'
+import { registerUserAsync, loginUserAsync, selectUserStatus } from '../../../store/userSlice'
 import { UserRegisterData } from '../../../types/user'
 import YupValidation from './yupValidation'
 import { useNavigate } from 'react-router-dom'
@@ -23,11 +23,15 @@ const initialRegisterData = {
 }
 
 const SignUp = () => {
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const status = useAppSelector(selectUserStatus)
 
   const handleSignup = async (values: UserRegisterData) => {
-    await dispatch(registerUserAsync(values))
+    const res = await dispatch(registerUserAsync(values)).unwrap()
+    if (res.status === 'success') {
+      await dispatch(loginUserAsync({ email: values.email, password: values.password }))
+    }
     navigate('/')
   }
 
@@ -122,9 +126,15 @@ const SignUp = () => {
                       />
                     </Grid>
                   </Grid>
-                  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  <LoadingButton
+                    type="submit"
+                    loading={status === 'loading'}
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
                     Sign Up
-                  </Button>
+                  </LoadingButton>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
                       <Link href="/signin" variant="body2">

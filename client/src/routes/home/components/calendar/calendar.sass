@@ -1,47 +1,64 @@
-.rbc
-  &-calendar
-    min-height: 600px
+@import '../../../../styles/variables'
 
-  &-header
-    background: #79b8e4
-    color: white
-    padding: 10px
-    font-size: 12px
+.calendar-container
+  .rbc
+    &-calendar
+      min-height: 520px
 
-  &-event
-    padding: 0px !important
-    border-radius: 0px !important
-    border: none !important
-    background-color: transparent !important
-    z-index: 2
-    position: relative
+    &-header
+      background: $primary-color-light
+      color: white
+      padding: 10px
+      font-size: 12px
 
-  &-background-event
-    padding: 0px !important
-    border-radius: 0px !important
-    border: none !important
-    background-color: transparent !important
+    &-event
+      padding: 0px !important
+      border-radius: 0px !important
+      border: none !important
+      background-color: transparent !important
+      z-index: 2
+      position: relative
 
-  &-event-label
-    display: none !important
+    &-background-event
+      padding: 0px !important
+      border-radius: 0px !important
+      border: none !important
+      background-color: transparent !important
 
-  &-events-container
-    width: 100% !important
+    &-event-label
+      display: none !important
 
-  &-timeslot-group
-    min-height: 120px !important
+    &-events-container
+      width: 100% !important
 
-  &-day-slot .rbc-time-slot:after
-    content: ''
-    width: 100%
-    border-top: 1px solid lightblue
-    display: block
+    &-timeslot-group
+      min-height: 120px !important
 
-  &-time-slot
-    background: #eaf3fa
-    color: #74a4c3
-    z-index: 1
+    &-day-slot .rbc-time-slot:after
+      content: ''
+      width: 100%
+      border-top: 1px solid lightblue
+      display: block
 
-  &-addons-dnd-resizable
-    height: 100%
-    width: 100%
+    &-time-slot
+      background: $calendar-background-color
+      color: $primary-color-light
+      z-index: 1
+
+    &-addons-dnd-resizable
+      height: 100%
+      width: 100%
+
+  .event
+    display: flex
+    align-items: center
+
+    &-content
+      width: calc(100% - 42px)
+      padding: 8px 8px 8px 0
+
+    &-name
+      width: 100%
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis

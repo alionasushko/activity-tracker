@@ -1,46 +1,42 @@
-import { ChangeEvent } from 'react'
-import { Box, Typography, Stack, Checkbox } from '@mui/material'
-import { toast } from 'react-toastify'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { Box, Typography, Checkbox } from '@mui/material'
 import { EVENT_STATUS_COLORS } from './constants'
 import { IEventProps } from '../../../../types/calendar'
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
-import { selectCalendarStatus, updateEventAsync, getEventsAsync } from '../../../../store/calendarSlice'
+import { useAppDispatch } from '../../../../store/hooks'
+import { updateEventAsync, getEventsAsync } from '../../../../store/calendarSlice'
 
 const Event = ({ event }: IEventProps) => {
   const dispatch = useAppDispatch()
-  const calendarStatus = useAppSelector(selectCalendarStatus)
+  const [isEventChecked, setIsEventChecked] = useState(event.status === 'complete')
 
   const isUpcomingEvent = new Date(event.end) > new Date()
-  const background =
-    event.status === 'complete'
-      ? EVENT_STATUS_COLORS.complete
-      : isUpcomingEvent
-      ? EVENT_STATUS_COLORS.upcoming
-      : EVENT_STATUS_COLORS.incomplete
+  const background = isEventChecked
+    ? EVENT_STATUS_COLORS.complete
+    : isUpcomingEvent
+    ? EVENT_STATUS_COLORS.upcoming
+    : EVENT_STATUS_COLORS.incomplete
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked
+    setIsEventChecked(checked)
     const status = checked ? 'complete' : 'incomplete'
-    await dispatch(updateEventAsync({ ...event, status })).unwrap()
-    dispatch(getEventsAsync())
-    toast.success('Event status successfully updated', {
-      autoClose: 3000,
-      hideProgressBar: true,
-    })
+    const res = await dispatch(updateEventAsync({ ...event, status }))
+    await dispatch(getEventsAsync())
+    if ('error' in res) setIsEventChecked(!checked)
   }
 
+  useEffect(() => {
+    setIsEventChecked(event.status === 'complete')
+  }, [event.status])
+
   return (
-    <Box sx={{ backgroundColor: background }}>
-      <Stack direction="row" spacing={2}>
-        <Checkbox
-          checked={event.status === 'complete'}
-          disabled={calendarStatus === 'loading'}
-          inputProps={{ 'aria-label': 'controlled' }}
-          onChange={handleChange}
-        />
-        <Typography variant="body2">{event.name}</Typography>
-        {event.location && <Typography variant="body2">{event.location}</Typography>}
-      </Stack>
+    <Box className="event" sx={{ backgroundColor: background }}>
+      <Checkbox checked={isEventChecked} inputProps={{ 'aria-label': 'controlled' }} onChange={handleChange} />
+      <div className="event-content">
+        <Typography variant="body2" className="event-name">
+          {event.name} hello world hello hello world
+        </Typography>
+      </div>
     </Box>
   )
 }

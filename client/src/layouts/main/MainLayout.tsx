@@ -3,21 +3,19 @@ import { Outlet, Navigate, useNavigate, Link } from 'react-router-dom'
 import { CssBaseline, Box, Container, AppBar, Toolbar, Typography, Button } from '@mui/material'
 import { getToken } from '../../utils/auth'
 import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { selectAccount, getUserCredentialsAsync, signOutAsync } from '../../store/userSlice'
+import { selectAccount, getUserCredentialsAsync, signOutAsync, selectUserStatus } from '../../store/userSlice'
 import logo from '../../assets/images/logo.svg'
 import LogoutIcon from '@mui/icons-material/Logout'
 import QueryStatsIcon from '@mui/icons-material/QueryStats'
 import './mainLayout.sass'
+import { LoadingButton } from '@mui/lab'
 
 const MainLayout: React.FC = () => {
   const dispatch = useAppDispatch()
   const account = useAppSelector(selectAccount)
+  const status = useAppSelector(selectUserStatus)
   const navigate = useNavigate()
   const accessToken = getToken()
-
-  if (!accessToken) {
-    return <Navigate to="signin" />
-  }
 
   useEffect(() => {
     if (accessToken && !account) dispatch(getUserCredentialsAsync())
@@ -28,10 +26,14 @@ const MainLayout: React.FC = () => {
     navigate('/signin')
   }
 
+  if (!accessToken) {
+    return <Navigate to="/signin" replace />
+  }
+
   return (
     <>
       <AppBar
-        position="fixed"
+        position="sticky"
         elevation={0}
         sx={{ borderBottom: (theme: any) => `1px solid ${theme.palette.divider}` }}
       >
@@ -51,18 +53,19 @@ const MainLayout: React.FC = () => {
           >
             My statistics
           </Button>
-          <Button
+          <LoadingButton
             variant="outlined"
+            loading={status === 'loading'}
             endIcon={<LogoutIcon />}
             className="btn-outline-white"
             sx={{ my: 1, mx: 1.5 }}
             onClick={signOut}
           >
             Sign Out
-          </Button>
+          </LoadingButton>
         </Toolbar>
       </AppBar>
-      <Container component="main" className="app">
+      <Container component="main" className="main-layout">
         <CssBaseline />
         <Box className="app-container">
           <Outlet />

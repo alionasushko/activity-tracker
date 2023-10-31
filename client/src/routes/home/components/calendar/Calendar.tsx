@@ -1,11 +1,10 @@
 import { Calendar as BigCalendar, momentLocalizer, Views } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import moment from 'moment'
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import { useAppSelector } from '../../../../store/hooks'
 import Event from './Event'
 import { IEvent, IEventItem, ICalendarProps } from '../../../../types/calendar'
-import { useEffect } from 'react'
-import { getEventsAsync, selectEvents } from '../../../../store/calendarSlice'
+import { selectEvents } from '../../../../store/calendarSlice'
 import './calendar.sass'
 
 const localizer = momentLocalizer(moment)
@@ -20,7 +19,6 @@ const initProps = {
 const DndCalendar = withDragAndDrop<IEventItem>(BigCalendar)
 
 export const Calendar = ({ onShowEventView }: ICalendarProps) => {
-  const dispatch = useAppDispatch()
   const data = useAppSelector(selectEvents)
 
   const components = {
@@ -36,10 +34,6 @@ export const Calendar = ({ onShowEventView }: ICalendarProps) => {
     end: new Date(event.end),
     data: { event },
   }))
-
-  useEffect(() => {
-    dispatch(getEventsAsync())
-  }, [])
 
   return (
     <DndCalendar

@@ -17,7 +17,7 @@ export interface IEventItem {
 }
 
 export interface ICalendar {
-  status: string
+  status: 'idle' | 'loading' | 'failed'
   events: IEvent[]
   event: IEvent | onShowEventViewParams
   isOpenEventModal: boolean

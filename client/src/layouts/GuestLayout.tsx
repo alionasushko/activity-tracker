@@ -4,7 +4,7 @@ import { CssBaseline, Box, Container } from '@mui/material'
 
 const GuestLayout: React.FC = () => {
   return (
-    <Container component="main" className="app">
+    <Container component="main" className="guest-layout">
       <CssBaseline />
       <Box className="app-container">
         <Outlet />

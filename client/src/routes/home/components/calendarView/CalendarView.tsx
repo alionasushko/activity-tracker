@@ -1,7 +1,8 @@
+import { useEffect } from 'react'
 import { Box, Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useAppDispatch } from '../../../../store/hooks'
-import { manageEventModal, setEventValue } from '../../../../store/calendarSlice'
+import { manageEventModal, setEventValue, getEventsAsync } from '../../../../store/calendarSlice'
 import { Calendar } from '../calendar/Calendar'
 import { onShowEventViewParams } from '../../../../types/calendar'
 import EventFormModal from '../eventForm/EventFormModal'
@@ -18,8 +19,12 @@ const CalendarView = () => {
     dispatch(manageEventModal(true))
   }
 
+  useEffect(() => {
+    dispatch(getEventsAsync())
+  }, [])
+
   return (
-    <Box sx={{ minHeight: 500 }}>
+    <Box className="calendar-container">
       <Button variant="contained" endIcon={<AddIcon />} sx={{ mb: 2 }} onClick={onClickCreateEvent}>
         Create
       </Button>

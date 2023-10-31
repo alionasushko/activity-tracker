@@ -10,14 +10,14 @@ const YupValidation = yup.object().shape({
   password: yup
     .string()
     .required('Enter Your Password')
-    .matches(PasswordRegEx, 'Uppercase Lowercase Special char Required')
-    .min(8, 'Password Should be minimum 8 character')
-    .max(50, 'Too long'),
+    .matches(PasswordRegEx, 'Uppercase, lowercase and special characters are required')
+    .min(8, 'Password should be minimum 8 character')
+    .max(50, 'Password is too'),
 
   passwordConfirm: yup
     .string()
     .oneOf([yup.ref('password')], 'Password does not matched')
-    .required('Confirm Password is Required'),
+    .required('Confirm password is required'),
 })
 
 export default YupValidation

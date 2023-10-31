@@ -20,21 +20,27 @@ const Statistics: React.FC = () => {
   const [startDate, setStartDate] = useState<Date>(new Date(new Date().setDate(new Date().getDate() - 7)))
   const [endDate, setEndDate] = useState<Date>(new Date())
 
-  const chartData = useMemo(() => formatChartData(statistics.chartData), [statistics.chartData])
-  const tickStart = chartData[0].date
-  const tickEnd = chartData[chartData.length - 1].date
-  const domain: AxisDomain = [(dataMin: number) => dataMin, tickEnd]
-  const ticks = useMemo(() => getTicks(tickStart, tickEnd, 5), [tickStart, tickEnd])
-  const filledData = useMemo(() => fillTicksData(ticks, chartData), [ticks, chartData])
-
   const getStatistics = () => {
     dispatch(getStatisticsAsync({ startDate, endDate }))
   }
 
   useEffect(getStatistics, [])
 
+  const chartData = useMemo(() => formatChartData(statistics.chartData), [statistics.chartData])
+  const tickStart = chartData[0]?.date
+  const tickEnd = chartData[chartData.length - 1]?.date
+  const domain: AxisDomain = [(dataMin: number) => dataMin, tickEnd]
+
+  const ticks = useMemo(() => {
+    if (tickStart && tickEnd) return getTicks(tickStart, tickEnd, 5)
+  }, [tickStart, tickEnd])
+
+  const filledData = useMemo(() => {
+    if (chartData.length && ticks?.length) return fillTicksData(ticks, chartData)
+  }, [ticks, chartData])
+
   return (
-    <Box className="app-container">
+    <Box>
       <Typography variant="h3" color="inherit" sx={{ mb: 4 }} noWrap>
         Here's your statistics
       </Typography>
@@ -63,7 +69,7 @@ const Statistics: React.FC = () => {
       <Box>
         {status === 'loading' ? (
           <CircularProgress />
-        ) : (
+        ) : chartData.length ? (
           <ResponsiveContainer width="90%" height={500}>
             <AreaChart
               width={900}
@@ -115,6 +121,10 @@ const Statistics: React.FC = () => {
               />
             </AreaChart>
           </ResponsiveContainer>
+        ) : (
+          <Typography variant="h4" color="inherit" sx={{ mb: 4 }} noWrap>
+            There are no statistics for this period
+          </Typography>
         )}
       </Box>
     </Box>
