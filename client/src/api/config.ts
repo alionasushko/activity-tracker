@@ -12,7 +12,7 @@ const axiosApiInstance = axios.create({
 
 const refreshAccessToken = async () => {
   try {
-    const response = await axiosApiInstance.get(process.env.REACT_APP_API_URL + '/auth/refres')
+    const response = await axiosApiInstance.get(process.env.REACT_APP_API_URL + '/auth/refresh')
     return response.data.access_token
   } catch (error) {
     removeToken()
