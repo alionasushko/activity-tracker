@@ -7,12 +7,13 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  Grid,
   FormControlLabel,
   Checkbox,
+  IconButton,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import DeleteIcon from '@mui/icons-material/Delete'
+import CloseIcon from '@mui/icons-material/Close'
 import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
@@ -72,7 +73,12 @@ const EventFormModal = () => {
       aria-describedby="modal-description"
       onClose={handleCloseModal}
     >
-      <DialogTitle>{event?.id ? 'Update' : 'Create'} an event</DialogTitle>
+      <DialogTitle>
+        {event?.id ? 'Update' : 'Create'} an event{' '}
+        <IconButton style={{ position: 'absolute', right: '8px', top: '8px' }} onClick={handleCloseModal}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <Box mx={2} mb={2} p={3}>
           <Formik
@@ -85,33 +91,31 @@ const EventFormModal = () => {
               return (
                 <Form>
                   {event.id && (
-                    <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <Button
-                          aria-label="delete"
-                          variant="contained"
-                          startIcon={<DeleteIcon />}
-                          onClick={() => deleteEvent(event.id)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          label="Completed"
-                          name="status"
-                          onChange={(e) => {
-                            if ('checked' in e.target)
-                              setFieldValue('status', e.target.checked ? 'complete' : 'incomplete')
-                          }}
-                          onBlur={handleBlur}
-                          control={
-                            <Checkbox
-                              checked={values.status === 'complete'}
-                              sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
-                            />
-                          }
-                        />
-                      </Grid>
-                    </Grid>
+                    <Stack direction="row" justifyContent="space-between" sx={{ mb: 2 }}>
+                      <FormControlLabel
+                        label="Completed"
+                        name="status"
+                        onChange={(e) => {
+                          if ('checked' in e.target)
+                            setFieldValue('status', e.target.checked ? 'complete' : 'incomplete')
+                        }}
+                        onBlur={handleBlur}
+                        control={
+                          <Checkbox
+                            checked={values.status === 'complete'}
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+                          />
+                        }
+                      />
+                      <Button
+                        aria-label="delete"
+                        variant="contained"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => deleteEvent(event.id)}
+                      >
+                        Delete
+                      </Button>
+                    </Stack>
                   )}
                   <TextField
                     label="Name"

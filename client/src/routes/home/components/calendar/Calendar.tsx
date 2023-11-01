@@ -35,19 +35,28 @@ export const Calendar = ({ onShowEventView }: ICalendarProps) => {
     data: { event },
   }))
 
+  const onSelectSlot = ({ start, end }: IEventItem) => {
+    onShowEventView({ start: start.toString(), end: end.toString() })
+  }
+
+  const onDoubleClickEvent = (e: IEventItem) => {
+    const eventData = e?.data?.event
+    eventData && onShowEventView(eventData)
+  }
+
+  const moveEvent = ({ start, end, event }: IEventItem) => {
+    onShowEventView({ ...event?.data?.event, start: start.toString(), end: end.toString() })
+  }
+
   return (
     <DndCalendar
-      onSelectSlot={({ start, end }) => {
-        onShowEventView({ start, end })
-      }}
-      onDoubleClickEvent={(event) => {
-        const eventData = event?.data?.event
-        eventData && onShowEventView(eventData)
-      }}
+      onSelectSlot={onSelectSlot}
+      onDoubleClickEvent={onDoubleClickEvent}
       events={events}
       style={{ width: '100%' }}
       components={components}
       selectable
+      onEventDrop={moveEvent}
       {...initProps}
     />
   )

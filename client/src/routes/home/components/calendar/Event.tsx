@@ -34,7 +34,7 @@ const Event = ({ event }: IEventProps) => {
       <Checkbox checked={isEventChecked} inputProps={{ 'aria-label': 'controlled' }} onChange={handleChange} />
       <div className="event-content">
         <Typography variant="body2" className="event-name">
-          {event.name} hello world hello hello world
+          {event.name}
         </Typography>
       </div>
     </Box>

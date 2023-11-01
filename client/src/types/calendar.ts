@@ -13,6 +13,7 @@ export interface IEventItem {
   start: string | Date
   end: string | Date
   data?: { event?: IEvent }
+  event?: any
   isDraggable?: boolean
 }
 

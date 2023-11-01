@@ -7,7 +7,8 @@ import { DatePicker } from '@mui/x-date-pickers'
 import CustomTooltip from './components/CustomTooltip'
 import Typography from '@mui/material/Typography'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { Box, Stack, Button, CircularProgress } from '@mui/material'
+import { Box, Stack, Button, CircularProgress, IconButton } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { AxisDomain } from 'recharts/types/util/types'
 import { getStatisticsAsync, selectStatistics, selectStatisticsStatus } from '../../store/statisticsSlice'
 import { formatChartData, getTicks, fillTicksData, dateFormatter } from '../../utils/statistics'
@@ -41,11 +42,16 @@ const Statistics: React.FC = () => {
 
   return (
     <Box>
-      <Typography variant="h3" color="inherit" sx={{ mb: 4 }} noWrap>
-        Here's your statistics
-      </Typography>
+      <Stack direction="row" alignItems="center" gap={1} sx={{ mb: 6 }}>
+        <IconButton href="/">
+          <ArrowBackIcon fontSize="large" />
+        </IconButton>
+        <Typography variant="h4" color="inherit" noWrap>
+          My statistics
+        </Typography>
+      </Stack>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Stack direction="row" gap={2} sx={{ mb: 4 }}>
+        <Stack direction="row" gap={2} sx={{ ml: 2, mb: 6 }}>
           <DatePicker
             label="Start date"
             value={dayjs(startDate)}
@@ -62,7 +68,7 @@ const Statistics: React.FC = () => {
             onChange={(newValue) => newValue && setEndDate(new Date(newValue.toISOString()))}
           />
           <Button variant="contained" onClick={getStatistics}>
-            Show statistics
+            Show
           </Button>
         </Stack>
       </LocalizationProvider>

@@ -23,7 +23,7 @@ const Home: React.FC = () => {
           sx={{ mb: 2 }}
         >
           <AlertTitle>Hello {account?.name}! 👋</AlertTitle>
-          Here you can add your events
+          You can add your events here
         </Alert>
       </Collapse>
       <CalendarView />
