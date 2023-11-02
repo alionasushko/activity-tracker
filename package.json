@@ -1,0 +1,19 @@
+{
+  "name": "activity-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "https://github.com/alionasushko/activity-tracker.git",
+  "scripts": {
+    "client:start": "yarn --cwd client start",
+    "server:start": "yarn --cwd server start",
+    "client:build": "yarn --cwd client build",
+    "install:client": "yarn --cwd client",
+    "install:server": "yarn --cwd server",
+    "install:all": "yarn run install:client && yarn run install:server",
+    "postinstall": "yarn run install:all"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
+}

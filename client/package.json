@@ -1,5 +1,5 @@
 {
-  "name": "form_client",
+  "name": "activity-tracker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
