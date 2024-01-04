@@ -39,7 +39,7 @@ const MainLayout: React.FC = () => {
       >
         <Toolbar sx={{ flexWrap: 'wrap' }}>
           <Link to="/">
-            <img src={logo} alt="Productivity tracker logo" width={30} className="logo-image" />
+            <img src={logo} alt="Productivity tracker logo" width={30} height={30} className="logo-image" />
           </Link>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
             Productivity tracker
